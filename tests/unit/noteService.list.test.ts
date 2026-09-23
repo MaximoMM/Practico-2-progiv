@@ -26,7 +26,6 @@ describe('NoteService - listNotes (Ejercicio 2)', () => {
     expect(result).toEqual([]);
     expect(mockRepo.findAll).toHaveBeenCalledTimes(1);
     // Forzamos el fallo inicial para el commit en ROJO
-    expect(true).toBe(false);
   });
 
   it('debería retornar todas las notas existentes', () => {
