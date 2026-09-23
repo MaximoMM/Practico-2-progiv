@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { NoteService } from '../../src/services/NoteService';
+import { NoteService, NoteServiceImpl } from '../../src/services/NoteService';
 import { NoteRepository } from '../../src/repositories/NoteRepository';
 import * as notificationService from '../../src/services/notificationService';
 
@@ -22,7 +22,7 @@ describe('NoteService - notify (Ejercicio 6)', () => {
       delete: vi.fn(),
     } as unknown as NoteRepository;
 
-    noteService = new NoteService(mockRepo);
+    noteService = new NoteServiceImpl(mockRepo);
   });
 
   it('debe llamar a notify si se crea una nota con pinned: true', () => {
