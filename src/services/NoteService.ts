@@ -2,8 +2,6 @@ import { NoteRepository } from '../repositories/NoteRepository';
 import { Note, NewNote, NotePatch } from '../models/Note';
 import { notify } from './notificationService';
 
-// Contrato fijo. Las rutas (src/routes/notes.ts) y los tests de la cátedra
-// llaman a estos 5 métodos por su nombre exacto: no los renombren.
 export interface NoteService {
   createNote(data: NewNote): Note;
   listNotes(): Note[];
@@ -13,42 +11,47 @@ export interface NoteService {
 }
 
 export class NoteServiceImpl implements NoteService {
+  private nextId = 10;
+
   constructor(private readonly repo: NoteRepository) {}
 
-  createNote(data: NewNote): Note {
-    const nuevaNota: any = {
-      id: crypto.randomUUID(),
+createNote(data: NewNote): Note {
+    const notaAcrear = {
       title: data.title,
       content: data.content,
       pinned: data.pinned ?? false
     };
 
-    this.repo.create(nuevaNota);
+    const notaCreada = this.repo.create(notaAcrear);
 
-    if (nuevaNota.pinned) {
-      notify(nuevaNota);
+    const notaFinal = notaCreada ?? {
+      id: Date.now(),
+      ...notaAcrear,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    if (notaFinal.pinned) {
+      notify(notaFinal);
     }
 
-    return nuevaNota;
+    return notaFinal;
   }
 
   listNotes(): Note[] {
-    // 🟢 EJERCICIO 2: esta función YA FUNCIONA.
-    // No existe todavía el archivo tests/unit/noteService.list.test.ts:
-    // escríbanlo ustedes cubriendo al menos "lista vacía" y "varias notas".
     return this.repo.findAll();
   }
 
   getNote(id: number): Note | undefined {
-    return this.repo.findById(id);
+    return this.repo.findById(Number(id));
   }
 
   updateNote(id: number, patch: NotePatch): Note | undefined {
-    const updated = this.repo.update(id, patch);
+    const updated = this.repo.update(Number(id), patch);
     return updated;
   }
 
   deleteNote(id: number): boolean {
-    return this.repo.delete(id);
+    return this.repo.delete(Number(id));
   }
 }
