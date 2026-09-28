@@ -18,9 +18,9 @@ describe('NoteService - deleteNote', () => {
     const id = 1;
     mockRepo.delete.mockReturnValue(true);
 
-    const result = noteService.deleteNote(String(id));
+    const result = noteService.deleteNote(id);
 
-    expect(mockRepo.delete).toHaveBeenCalledWith(String(id));
+    expect(mockRepo.delete).toHaveBeenCalledWith(id);
     expect(mockRepo.delete).toHaveBeenCalledTimes(1);
     expect(result).toBe(true);
   });
@@ -28,7 +28,7 @@ describe('NoteService - deleteNote', () => {
   it('debe devolver false si la nota no se pudo eliminar', () => {
     mockRepo.delete.mockReturnValue(false);
 
-    const result = noteService.deleteNote(String(999));
+    const result = noteService.deleteNote(999);
 
     expect(result).toBe(false);
   });
