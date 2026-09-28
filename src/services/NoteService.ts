@@ -16,7 +16,7 @@ export class NoteServiceImpl implements NoteService {
   constructor(private readonly repo: NoteRepository) {}
 
   createNote(data: NewNote): Note {
-    const nuevaNota = {
+    const nuevaNota: any = {
       id: crypto.randomUUID(),
       title: data.title,
       content: data.content,
@@ -44,11 +44,11 @@ export class NoteServiceImpl implements NoteService {
   }
 
   updateNote(id: number, patch: NotePatch): Note | undefined {
-    const updated = this.noteRepository.update(id, patch);
+    const updated = this.repo.update(id, patch);
     return updated;
   }
 
   deleteNote(id: number): boolean {
-    return this.noteRepository.delete(id);
+    return this.repo.delete(id);
   }
 }
